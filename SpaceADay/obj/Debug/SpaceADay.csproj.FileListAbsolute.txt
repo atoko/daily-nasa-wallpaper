@@ -15,3 +15,7 @@ c:\users\pcardona\documents\visual studio 2012\Projects\SpaceADay\SpaceADay\bin\
 c:\users\pcardona\documents\visual studio 2012\Projects\SpaceADay\SpaceADay\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
 c:\users\pcardona\documents\visual studio 2012\Projects\SpaceADay\SpaceADay\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
 c:\users\pcardona\documents\visual studio 2012\Projects\SpaceADay\SpaceADay\bin\Debug\Hardcodet.Wpf.TaskbarNotification.xml
+c:\users\pcardona\documents\visual studio 2012\Projects\SpaceADay\SpaceADay\obj\Debug\Wallpaper\Carousel.g.cs
+c:\users\pcardona\documents\visual studio 2012\Projects\SpaceADay\SpaceADay\obj\Debug\GeneratedInternalTypeHelper.g.cs
+c:\users\pcardona\documents\visual studio 2012\Projects\SpaceADay\SpaceADay\obj\Debug\SpaceADay_MarkupCompile.lref
+c:\users\pcardona\documents\visual studio 2012\Projects\SpaceADay\SpaceADay\obj\Debug\Wallpaper\Carousel.baml

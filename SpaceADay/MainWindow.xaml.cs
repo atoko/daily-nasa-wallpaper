@@ -16,9 +16,7 @@ using System.Windows.Shapes;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Runtime.InteropServices;
-using Microsoft.Win32;
-using Hardcodet.Wpf.TaskbarNotification;
+using System.ComponentModel;
 
 namespace SpaceADay
 {
@@ -27,16 +25,19 @@ namespace SpaceADay
 		public MainWindow()
 		{
 			InitializeComponent();
-
-			TaskbarIcon tbi = new TaskbarIcon();
-			//tbi.Icon = Resources["Error"];
-			tbi.ToolTipText = "hello world";
-			SetLatestPicture();
+			carousel.Context.ReadIndexImagesFromFolder("images");
+			this.ShowInTaskbar = false;
+			dpDate.SelectedDate = DateTime.Now;
 		}
-		private void SetLatestPicture()
+		private void OnClosing(object sender, CancelEventArgs e)
+		{
+			e.Cancel = true;
+			this.Hide();
+		}
+		private void SaveLatestPicture()
 		{
 			Directory.CreateDirectory("images");
-			DateTime currentDate = DateTime.Now;
+			DateTime currentDate = dpDate.SelectedDate.Value;
 			ApodResponse data = RequestApod(currentDate);
 
 			while (data.type != "image")
@@ -47,8 +48,7 @@ namespace SpaceADay
 
 			var imageUri = data.hdurl != null ? data.hdurl : data.url;
 			var imagePath = SaveImageToFile(RequestImage(imageUri), "images/" + currentDate.ToString("yyyy-MM-dd") + ".png");
-
-			Wallpaper.Set(imagePath, Wallpaper.Style.Centered);
+			carousel.Context.ReadIndexImagesFromFolder("images");
 		}
 		public static string SaveImageToFile(ImageSource request, string filePath)
 		{
@@ -125,6 +125,16 @@ namespace SpaceADay
 					type = "invalid"
 				};
 			}
+		}
+
+		private void SaveLatestPicture(object sender, RoutedEventArgs e)
+		{
+			SaveLatestPicture();
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			Wallpaper.Set(carousel.Context.PathToImage, Wallpaper.Style.Centered);
 		}
 	}
 }
