@@ -10,7 +10,7 @@ namespace SpaceADay
 {
 	public sealed class Wallpaper
 	{
-		Wallpaper() { }
+		public Wallpaper() { }
 
 		const int SPI_SETDESKWALLPAPER = 20;
 		const int SPIF_UPDATEINIFILE = 0x01;
@@ -19,29 +19,23 @@ namespace SpaceADay
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
 
-		public enum Style : int
-		{
-			Tiled,
-			Centered,
-			Stretched
-		}
 
-		public static void Set(string path, Style style)
+		public static void Set(string path, MainWindow.Style style)
 		{
 			RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
-			if (style == Style.Stretched)
+			if (style == MainWindow.Style.Stretched)
 			{
 				key.SetValue(@"WallpaperStyle", 2.ToString());
 				key.SetValue(@"TileWallpaper", 0.ToString());
 			}
 
-			if (style == Style.Centered)
+			if (style == MainWindow.Style.Centered)
 			{
 				key.SetValue(@"WallpaperStyle", 1.ToString());
 				key.SetValue(@"TileWallpaper", 0.ToString());
 			}
 
-			if (style == Style.Tiled)
+			if (style == MainWindow.Style.Tiled)
 			{
 				key.SetValue(@"WallpaperStyle", 1.ToString());
 				key.SetValue(@"TileWallpaper", 1.ToString());

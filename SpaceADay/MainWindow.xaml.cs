@@ -17,11 +17,19 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
+using Microsoft.Win32;
 
 namespace SpaceADay
 {
 	public partial class MainWindow : Window
 	{
+		public enum Style : int
+		{
+			Tiled,
+			Centered,
+			Stretched
+		}
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -134,7 +142,26 @@ namespace SpaceADay
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			Wallpaper.Set(carousel.Context.PathToImage, Wallpaper.Style.Centered);
+			string path = System.IO.Path.GetFullPath(carousel.Context.PathToImage);
+			Wallpaper.Set(path, (Style)Enum.Parse(typeof(Style), cbWallpaperStyle.SelectedItem.ToString()));
+		}
+
+		private	RegistryKey registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+		private void StackPanel_Loaded(object sender, RoutedEventArgs e)
+		{
+			chkStartup.IsChecked = registryKey.GetValue("SpaceToday") != null;
+		}
+
+		private void chkStartup_Checked(object sender, RoutedEventArgs e)
+		{
+			if (((CheckBox)sender).IsChecked == true)
+			{
+				registryKey.SetValue("SpaceToday", System.Reflection.Assembly.GetEntryAssembly().Location);
+			}
+			else
+			{
+				registryKey.DeleteValue("SpaceToday");
+			}
 		}
 	}
 }

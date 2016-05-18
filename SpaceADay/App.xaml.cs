@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace SpaceADay
 {
@@ -22,8 +23,19 @@ namespace SpaceADay
 			tbi.TrayMouseDoubleClick += tbi_TrayMouseDoubleClick;
 			tbi.TrayLeftMouseUp += tbi_TrayMouseDoubleClick;
 
-			this.MainWindow = new MainWindow();
+			var cm = new ContextMenu();
+			tbi.ContextMenu = cm;
 
+			System.Windows.Controls.TextBlock exitButton = new System.Windows.Controls.TextBlock
+			{
+				Text = "Exit",
+				Width = 100
+			};
+			cm.Items.Add(exitButton);
+			(exitButton.Parent as ContextMenu).MouseUp += (s, ev) => { this.Shutdown(); };
+
+
+			this.MainWindow = new MainWindow();
 			this.MainWindow.Show();
 		}
 
