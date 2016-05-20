@@ -19,7 +19,7 @@ namespace SpaceADay
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
 			TaskbarIcon tbi = new TaskbarIcon();
-			tbi.ToolTipText = "NASA APoD Wallpaper";
+			tbi.ToolTipText = "Space Today";
 			tbi.TrayMouseDoubleClick += tbi_TrayMouseDoubleClick;
 			tbi.TrayLeftMouseUp += tbi_TrayMouseDoubleClick;
 
@@ -32,7 +32,7 @@ namespace SpaceADay
 				Width = 100
 			};
 			cm.Items.Add(exitButton);
-			(exitButton.Parent as ContextMenu).MouseUp += (s, ev) => { this.Shutdown(); };
+			(exitButton).MouseUp += (s, ev) => { this.Shutdown(); };
 
 
 			this.MainWindow = new MainWindow();

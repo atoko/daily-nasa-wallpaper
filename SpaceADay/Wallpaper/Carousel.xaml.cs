@@ -20,9 +20,9 @@ namespace SpaceADay
 	/// </summary>
 	public partial class Carousel : UserControl
 	{
-		public IndexReader Context
+		public FileContext Context
 		{
-			get { return (this.DataContext as IndexReader); }
+			get { return (this.DataContext as FileContext); }
 		}
 		public Carousel()
 		{
