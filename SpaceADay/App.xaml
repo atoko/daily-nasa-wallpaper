@@ -6,7 +6,6 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Simple Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

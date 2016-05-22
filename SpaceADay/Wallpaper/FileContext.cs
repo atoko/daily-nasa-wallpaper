@@ -10,9 +10,9 @@ using System.Windows.Media.Imaging;
 
 namespace SpaceADay
 {
-	public class IndexReader : INotifyPropertyChanged
+	public class FileContext : INotifyPropertyChanged
 	{
-		private IEnumerable<string> _files = new List<string> { "uninitialized", "folder" };
+		private IEnumerable<string> _files = new List<string> { ".."};
 		public IEnumerable<string> IndexFiles
 		{
 			get { return _files; }
@@ -45,12 +45,36 @@ namespace SpaceADay
 				if (this.PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("Display")); } 
 			}
 		}
+        public FileContext()
+        {
+            ReadIndexImagesFromFolder("images");
+        }
 
 		public void ReadIndexImagesFromFolder(string folder)
         {
 			IndexFiles = Directory.EnumerateFiles(folder);
         }
+        public string SaveLatestPicture(DateTime date)
+        {
+            Directory.CreateDirectory("images");
+            NASA.ApodResponse data;
 
-		public event PropertyChangedEventHandler PropertyChanged;
+            do
+            {
+                data = NASA.ApodClient.RequestApod(date);
+                date = date.AddDays(-1);
+            }
+            while (data.media_type != "image");
+
+
+            var imageUri = data.hdurl != null ? data.hdurl : data.url;
+            var imageData = ImageUtils.RequestImage(imageUri);
+            var imageName = String.Format("images/{1}_{0}.png", data.title.Substring(0, 12), data.date);
+            var imagePath = ImageUtils.SaveImageToFile(imageData, imageName);
+            this.ReadIndexImagesFromFolder("images");
+
+            return imagePath;
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
 	}
 }
