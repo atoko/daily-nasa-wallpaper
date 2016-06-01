@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using SpaceADay.NASA;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Linq;
+using System.Windows;
+using System.Threading.Tasks;
+using System;
 
 namespace SpaceADay
 {
-	/// <summary>
-	/// Interaction logic for Carousel.xaml
-	/// </summary>
 	public partial class Carousel : UserControl
 	{
-		public IndexReader Context
+		public FileContext Context
 		{
-			get { return (this.DataContext as IndexReader); }
+			set { this.DataContext = value; }
+			get { return (this.DataContext as FileContext); }
 		}
 		public Carousel()
 		{
@@ -34,8 +24,31 @@ namespace SpaceADay
 			ListView list = sender as ListView;
 			if (list.SelectedItem != null)
 			{
-				Context.PathToImage = list.SelectedItem.ToString();
+				Context.PathToImage = (list.SelectedItem as ApodResponse).fileName.ToString();
 			}
+			Context.Selected = list.SelectedItems.Cast<ApodResponse>().ToList();
+		}
+		private void btnLoad_Click(object sender, RoutedEventArgs e)
+		{
+			progress.Maximum = calendar.SelectedDates.Count;
+			progress.Value = 0;
+			int p = 0;
+			Task.Run((Action)(() => {
+				var context = new FileContext();
+				foreach (var date in calendar.SelectedDates)
+				{
+					FileContext.SavePicture(date, context);
+					this.Dispatcher.Invoke((Action)(() =>
+					{
+						p++;
+						progress.Value = p;
+					}));
+				}
+				this.Dispatcher.Invoke((Action)(() =>
+				{
+					Context = context;
+				}));
+			}));
 		}
 	}
 }

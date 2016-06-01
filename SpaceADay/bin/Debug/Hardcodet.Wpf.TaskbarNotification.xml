@@ -1709,7 +1709,7 @@
             Registers properties.
             </summary>
         </member>
-        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.DoubleClickWaitTime">
+        <member name="P:Hardcodet.Wpf.TaskbarNotification.TaskbarIcon.doubleClickWaitTime">
             <summary>
             The time we should wait for a double click.
             </summary>

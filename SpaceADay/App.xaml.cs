@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
+using System.IO;
 
 namespace SpaceADay
 {
@@ -18,12 +20,24 @@ namespace SpaceADay
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
 			TaskbarIcon tbi = new TaskbarIcon();
-			tbi.ToolTipText = "NASA APoD Wallpaper";
+			tbi.ToolTipText = "Space Today";
 			tbi.TrayMouseDoubleClick += tbi_TrayMouseDoubleClick;
 			tbi.TrayLeftMouseUp += tbi_TrayMouseDoubleClick;
 
-			this.MainWindow = new MainWindow();
+			var cm = new ContextMenu();
+			tbi.ContextMenu = cm;
 
+			System.Windows.Controls.TextBlock exitButton = new System.Windows.Controls.TextBlock
+			{
+				Text = "Exit",
+				Width = 100
+			};
+			cm.Items.Add(exitButton);
+			(exitButton).MouseUp += (s, ev) => { this.Shutdown(); };
+
+
+			Directory.CreateDirectory("metadata");
+			this.MainWindow = new MainWindow();
 			this.MainWindow.Show();
 		}
 
