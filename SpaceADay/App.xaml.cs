@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
+using System.IO;
 
 namespace SpaceADay
 {
@@ -35,6 +36,7 @@ namespace SpaceADay
 			(exitButton).MouseUp += (s, ev) => { this.Shutdown(); };
 
 
+			Directory.CreateDirectory("metadata");
 			this.MainWindow = new MainWindow();
 			this.MainWindow.Show();
 		}

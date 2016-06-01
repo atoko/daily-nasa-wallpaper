@@ -11,23 +11,29 @@ namespace SpaceADay
 {
     class ImageUtils
     {
-        public static ImageSource RequestImage(string url)
+		static public byte[] ReadAllBytes(Stream stream)
+		{
+			using (var ms = new MemoryStream())
+			{
+				stream.CopyTo(ms);
+				return ms.ToArray();
+			}
+		}
+		public static ImageSource RequestImage(string url)
         {
             var request = System.Net.HttpWebRequest.CreateHttp(url);
             BitmapImage biImg = new BitmapImage();
 
             try
             {
-                using (var stream = new BinaryReader((request.GetResponse().GetResponseStream())))
-                {
-                    MemoryStream ms = new MemoryStream(stream.ReadBytes(90000000));
-                    biImg.BeginInit();
-                    biImg.StreamSource = ms;
-                    biImg.EndInit();
+				var responseStream = request.GetResponse().GetResponseStream();
+                MemoryStream ms = new MemoryStream(ReadAllBytes(responseStream));
+                biImg.BeginInit();
+                biImg.StreamSource = ms;
+                biImg.EndInit();
 
-                    return (biImg as ImageSource);
-                }
-            }
+				return (biImg as ImageSource);
+			}
             catch
             {
                 return (new BitmapImage() as ImageSource);
